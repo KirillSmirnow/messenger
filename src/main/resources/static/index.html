@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Messenger</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+</head>
+<body>
+<div id="main">
+  <label for="token">Token</label><input id="token">
+  <input onclick="connect()" type="button" value="Connect">
+</div>
+<script>
+  function connect() {
+      var socket = new SockJS('/ws');
+      stompClient = Stomp.over(socket);
+      stompClient.connect({}, function (frame) {
+          var token = document.getElementById("token").value;
+          stompClient.subscribe('/chats/' + token, function (message) {
+              console.log(message);
+          });
+      });
+  }
+</script>
+</body>
+</html>
